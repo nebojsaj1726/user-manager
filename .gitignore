@@ -1,0 +1,31 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Vue.js build output
+/dist
+/build
+
+# Go binaries
+/bin
+/obj
+
+# Docker files
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# IDE and editor files
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (local settings)
+.env
+
+# Log files
+*.log
