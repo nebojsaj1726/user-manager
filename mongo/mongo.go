@@ -15,10 +15,12 @@ type Database interface {
 }
 
 type Collection interface {
+	FindOne(context.Context, interface{}) SingleResult
 	InsertOne(context.Context, interface{}) (interface{}, error)
 	DeleteOne(context.Context, interface{}) (int64, error)
 	Find(context.Context, interface{}, ...*options.FindOptions) (Cursor, error)
 	UpdateOne(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
+	CountDocuments(context.Context, interface{}) (int64, error)
 }
 
 type SingleResult interface {
@@ -103,6 +105,11 @@ func (md *mongoDatabase) Client() Client {
 	return &mongoClient{cl: client}
 }
 
+func (mc *mongoCollection) FindOne(ctx context.Context, filter interface{}) SingleResult {
+	singleResult := mc.coll.FindOne(ctx, filter)
+	return &mongoSingleResult{sr: singleResult}
+}
+
 func (mc *mongoCollection) UpdateOne(ctx context.Context, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
 	return mc.coll.UpdateOne(ctx, filter, update, opts[:]...)
 }
@@ -120,6 +127,10 @@ func (mc *mongoCollection) DeleteOne(ctx context.Context, filter interface{}) (i
 func (mc *mongoCollection) Find(ctx context.Context, filter interface{}, opts ...*options.FindOptions) (Cursor, error) {
 	findResult, err := mc.coll.Find(ctx, filter, opts...)
 	return &mongoCursor{mc: findResult}, err
+}
+
+func (mc *mongoCollection) CountDocuments(ctx context.Context, filter interface{}) (int64, error) {
+	return mc.coll.CountDocuments(ctx, filter)
 }
 
 func (sr *mongoSingleResult) Decode(v interface{}) error {
