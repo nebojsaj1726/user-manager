@@ -43,13 +43,6 @@
         </el-table-column>
       </el-table>
 
-      <div
-        v-if="!isLoading && !error && filteredUsers.length === 0"
-        class="empty-state"
-      >
-        No users found.
-      </div>
-
       <el-alert
         v-if="error"
         title="Error"
@@ -90,10 +83,12 @@ const fetchUsers = async (page = 1, limit = 10) => {
   try {
     const params = { page, limit };
     const res = await UserDataService.getAll(params);
-    users.value = res.data.users;
-    total.value = res.data.total;
+    users.value = Array.isArray(res.data.users) ? res.data.users : [];
+    total.value = res.data.total || 0;
     error.value = null;
   } catch (e) {
+    users.value = [];
+    total.value = 0;
     error.value = e.response?.data?.message || "Failed to load users";
   } finally {
     isLoading.value = false;
