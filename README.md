@@ -13,7 +13,7 @@ cd your-repo-name
 docker-compose up --build
 ```
 
-## 🌐 Ports
+After running the app, you can:
 
-- http://localhost:5173
-- Just api: http://localhost:8080
+- See the app in your browser at http://localhost:5173
+- Test the API at http://localhost:8080
