@@ -11,6 +11,7 @@ services:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
       - dbdata:/data/db
+
   api:
     build:
       context: .
@@ -23,6 +24,18 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - mongodb
+
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    image: frontend
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT}:80"
+    depends_on:
+      - api
 
 volumes:
   dbdata:

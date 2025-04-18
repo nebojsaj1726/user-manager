@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/nebojsaj1726/user-manager/bootstrap"
 	"github.com/nebojsaj1726/user-manager/route"
@@ -20,12 +21,24 @@ func main() {
 
 	timeout := time.Duration(env.ContextTimeout) * time.Second
 
-	gin := gin.Default()
-	gin.SetTrustedProxies([]string{"127.0.0.1"})
+	router := gin.Default()
 
-	route.Setup(env, timeout, db, gin)
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
+	router.SetTrustedProxies([]string{"127.0.0.1"})
+
+	router.OPTIONS("/*path", func(c *gin.Context) {
+		c.Status(204)
+	})
+	route.Setup(env, timeout, db, router)
 
 	addr := fmt.Sprintf("%s:%s", env.ServerHost, env.ServerPort)
-	gin.Run(addr)
+	router.Run(addr)
 
 }

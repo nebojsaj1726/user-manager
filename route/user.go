@@ -19,7 +19,7 @@ func NewUserRouter(env *bootstrap.Env, timeout time.Duration, db mongo.Database,
 		UserUsecase: usecase.NewUserUseCase(ur, timeout),
 	}
 
-	group.GET("/", controller.Fetch)
+	group.GET("", controller.Fetch)
 	group.POST("", controller.Create)
 	group.GET("/:id", controller.GetByID)
 	group.PUT("/:id", controller.Update)
