@@ -4,8 +4,8 @@
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/nebojsaj1726/user-manager.git
+cd user-manager
 
 # 2. Create .env files (based on provided .env.example)
 
