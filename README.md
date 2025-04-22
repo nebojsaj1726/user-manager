@@ -12,8 +12,3 @@ cd user-manager
 # 3. Run the app
 docker-compose up --build
 ```
-
-After running the app, you can:
-
-- See the app in your browser at http://localhost:5173
-- Test the API at http://localhost:8080
