@@ -1,4 +1,4 @@
-# 🧩 Go CRUD Boilerplate
+Go CRUD Boilerplate
 
 ## 🚀 Quick Start
 
